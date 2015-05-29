@@ -1,6 +1,6 @@
 {
   "name": "superclient",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Create a fluent interface to an API",
   "main": "index.js",
   "scripts": {
@@ -19,6 +19,7 @@
   "author": "Doug Moscrop",
   "license": "MIT",
   "dependencies": {
+    "url": "^0.10.3",
     "url-join": "0.0.1"
   },
   "devDependencies": {

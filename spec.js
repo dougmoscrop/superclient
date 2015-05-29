@@ -114,15 +114,28 @@ describe('superclient', function () {
 				sinon.assert.calledWith(http.get, '/bars/321/baz')
 			});
             
-            it('handles root with slashes', function() {
-                ['root', '/root', '/root/'].forEach(function(root) {
+            ['root', '/root', '/root/'].forEach(function(root) {
+                it('root: ' + root, function() {
                     client = new Client(root, request);
 				
 				    client.foo.get();
 				    sinon.assert.calledWith(http.get, '/root/foo');
                 });
-                
             });
+			
+			it('root: https://root', function() {
+				client = new Client('https://root', request);
+				client.foo.get();
+				
+				sinon.assert.calledWith(http.get, 'https://root/foo');
+            });
+				
+            it('root: http://root', function() {
+				client = new Client('http://root', request);
+				client.foo.get();
+				
+				sinon.assert.calledWith(http.get, 'http://root/foo');
+			});
 		});
 		
     });

@@ -1,13 +1,17 @@
-var urlJoin = require('url-join');
+var url = require('url'),
+    urlJoin = require('url-join');
 
 function Handler(context, path) {
+    var root = url.resolve('/', context.root);
     var paths = [].concat(path).map(encodeURIComponent);
     
-    var url = urlJoin.apply(urlJoin, ['/', context.root].concat(paths));
+    paths.unshift(root);
+                
+    var completeUrl = urlJoin.apply(urlJoin, paths);
     var _this = this;
     
     module.exports.verbs.forEach(function(verb) {
-        _this[verb] = context.request.bind(context.request, verb, url);
+        _this[verb] = context.request.bind(context.request, verb, completeUrl);
 	});
     
     return this;
