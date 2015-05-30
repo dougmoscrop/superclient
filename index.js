@@ -22,21 +22,39 @@ module.exports = function Configure(configure) {
     var routing = {};
     
     configure.call({
-        route: function(routeName) {
+        route: function(routeName, routePath) {
+			if (typeof routePath !== 'string') {
+				routePath = routeName;
+			}
+			
             Object.defineProperty(routing, routeName, {
                 get: function() {
                     var context = this;
-					return new Handler(context, routeName);
+					return new Handler(context, routePath);
                 }
             });
         },
-        resource: function(resourceName, nested) {
+        resource: function(resourceName) {
             var routes = [];
-            
+            var resourcePath = resourceName;
+			
+			if (typeof arguments[1] === 'string') {
+				resourcePath = arguments[1];
+			}
+			
+			var nested = arguments[arguments.length - 1];
+			
             if (typeof nested === 'function') {                
                 nested.call({
-                    route: function(routeName) {
-                        routes.push(routeName);
+                    route: function(routeName, routePath) {
+						if (typeof routePath !== 'string') {
+							routePath = routeName;
+						}
+						
+                        routes.push({
+							name: routeName,
+							path: routePath
+						});
                     }
                 });
             }
@@ -46,16 +64,16 @@ module.exports = function Configure(configure) {
                     var context = this;
                     
                     var collection = function(id) {
-                        var resource = new Handler(context, [resourceName, id]);
+                        var resource = new Handler(context, [resourcePath, id]);
                         
-                        routes.forEach(function(routeName) {
-							resource[routeName] = new Handler(context, [resourceName, id, routeName]);
+                        routes.forEach(function(route) {
+							resource[route.name] = new Handler(context, [resourcePath, id, route.path]);
                         });
                         
                         return resource;
                     };
                     
-                    return Handler.call(collection, context, resourceName);
+                    return Handler.call(collection, context, resourcePath);
                 }
             });
         }

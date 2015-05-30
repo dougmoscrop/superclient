@@ -23,6 +23,11 @@ describe('superclient', function () {
                     this.should.not.have.property('resource', 'route');
                 });
             });
+			
+			this.route('someRoute', 'some-route');
+			this.resource('someResource', 'some-resource', function() {
+				this.route('someRouteName', 'some-route-name');
+			});
         });
         
         Client = superclient(configure);
@@ -135,6 +140,27 @@ describe('superclient', function () {
 				client.foo.get();
 				
 				sinon.assert.calledWith(http.get, 'http://root/foo');
+			});
+			
+			it('route with different path than name', function() {
+				client = new Client(request);
+				client.someRoute.get();
+				
+				sinon.assert.calledWith(http.get, '/some-route');
+			});
+			
+			it('resource with different path than name', function() {
+				client = new Client(request);
+				client.someResource(42).get();
+				
+				sinon.assert.calledWith(http.get, '/some-resource/42');
+			});
+			
+			it('resource with different path and a subroute path that is also different', function() {
+				client = new Client(request);
+				client.someResource(1).someRouteName.get();
+				
+				sinon.assert.calledWith(http.get, '/some-resource/1/some-route-name');
 			});
 		});
 		
