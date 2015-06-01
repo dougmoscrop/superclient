@@ -64,10 +64,11 @@ module.exports = function Configure(configure) {
                     var context = this;
                     
                     var collection = function(id) {
-                        var resource = new Handler(context, [resourcePath, id]);
+						var basePath = [resourcePath].concat([].slice.call(arguments));
+                        var resource = new Handler(context, basePath);
                         
                         routes.forEach(function(route) {
-							resource[route.name] = new Handler(context, [resourcePath, id, route.path]);
+							resource[route.name] = new Handler(context, basePath.concat(route.path));
                         });
                         
                         return resource;

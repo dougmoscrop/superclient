@@ -162,6 +162,14 @@ describe('superclient', function () {
 				
 				sinon.assert.calledWith(http.get, '/some-resource/1/some-route-name');
 			});
+			
+			it('composite identifier', function() {
+				client = new Client(request);
+				
+				client.bars(123, 321).get()
+				
+				sinon.assert.calledWith(http.get, '/bars/123/321');
+			});
 		});
 		
     });
