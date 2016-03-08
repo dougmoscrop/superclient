@@ -127,12 +127,18 @@ describe('superclient', function () {
         sinon.assert.calledWith(http.get, '/bars/321/baz')
       });
 
-      it('base root', function() {
+      it('base', function() {
         client = new Client(request);
 
         client.get()
 
-        sinon.assert.calledWith(http.get, '/');
+        sinon.assert.calledWith(http.get, '');
+      });
+
+      it('base root', function() {
+        client = new Client('http://foo.com', request);
+        client.get();
+				sinon.assert.calledWith(http.get, 'http://foo.com');
       });
 
       ['root', '/root', '/root/'].forEach(function(root) {

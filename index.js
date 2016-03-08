@@ -20,7 +20,7 @@ function Handler(context, path) {
 module.exports = function Configure(configure) {
   var routing = {};
 
-  configure.call({
+  configure && configure.call({
     route: function(routeName, routePath) {
       if (typeof routePath !== 'string') {
         routePath = routeName;
@@ -99,7 +99,7 @@ module.exports = function Configure(configure) {
 
   module.exports.verbs.forEach(function(verb) {
     routing[verb] = function() {
-      return this.request(verb, '/');
+      return this.request(verb, this.root);
     };
   });
 
