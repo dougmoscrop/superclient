@@ -106,4 +106,4 @@ module.exports = function Configure(configure) {
   return Client;
 }
 
-module.exports.verbs = ['get', 'put', 'post', 'delete', 'head', 'options'];
+module.exports.verbs = ['get', 'put', 'post', 'delete', 'head', 'options', 'patch'];
