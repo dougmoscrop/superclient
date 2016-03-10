@@ -1,5 +1,6 @@
 var url = require('url'),
-    urlJoin = require('url-join');
+    urlJoin = require('url-join'),
+    methods = require('methods');
 
 function Handler(context, path) {
   var root = url.resolve('/', context.root);
@@ -106,4 +107,4 @@ module.exports = function Configure(configure) {
   return Client;
 }
 
-module.exports.verbs = ['get', 'put', 'post', 'delete', 'head', 'options', 'patch'];
+module.exports.verbs = methods;
